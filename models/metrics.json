@@ -1,0 +1,14 @@
+{
+  "as_of_month": "2024-06-01",
+  "horizon_months": 3,
+  "trees": 69,
+  "valid_roc_auc": 0.9066,
+  "valid_pr_auc": 0.6678,
+  "test_roc_auc": 0.9478,
+  "test_pr_auc": 0.747,
+  "test_base_rate": 0.0462,
+  "test_brier": 0.0261,
+  "top_decile_lift": 7.99,
+  "top_2_deciles_capture": 0.8825,
+  "top_2_deciles_mrr_capture": 0.8694
+}

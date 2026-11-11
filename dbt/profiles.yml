@@ -1,0 +1,7 @@
+saas_analytics:
+  target: dev
+  outputs:
+    dev:
+      type: duckdb
+      path: "{{ env_var('SAAS_WAREHOUSE', '../data/saas.duckdb') }}"
+      threads: 4

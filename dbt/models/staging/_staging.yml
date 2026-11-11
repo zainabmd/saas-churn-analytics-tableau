@@ -1,0 +1,56 @@
+version: 2
+
+models:
+  - name: stg_accounts
+    description: "One row per customer account (company)."
+    columns:
+      - name: account_id
+        tests: [unique, not_null]
+      - name: contract_type
+        tests:
+          - accepted_values: { values: ["Monthly", "Annual"] }
+      - name: initial_plan
+        tests:
+          - relationships: { to: ref('stg_plans'), field: plan }
+  - name: stg_plans
+    columns:
+      - name: plan
+        tests: [unique, not_null]
+  - name: stg_subscription_events
+    description: "Lifecycle events from billing: new, expansion, contraction, churn, reactivation."
+    columns:
+      - name: event_id
+        tests: [unique, not_null]
+      - name: account_id
+        tests:
+          - not_null
+          - relationships: { to: ref('stg_accounts'), field: account_id }
+      - name: event_type
+        tests:
+          - accepted_values: { values: ["new", "expansion", "contraction", "churn", "reactivation"] }
+  - name: stg_invoices
+    columns:
+      - name: invoice_id
+        tests: [unique, not_null]
+      - name: status
+        tests:
+          - accepted_values: { values: ["paid", "recovered", "failed"] }
+  - name: stg_usage_monthly
+    description: "Product analytics, one row per active account-month (MRR as billed that month)."
+    tests:
+      - dbt_utils_unique_combination:
+          columns: ["account_id", "month"]
+    columns:
+      - name: seat_utilisation
+        tests: [not_null]
+  - name: stg_support_tickets
+    columns:
+      - name: ticket_id
+        tests: [unique, not_null]
+      - name: csat
+        tests:
+          - accepted_values: { values: [1, 2, 3, 4, 5], quote: false }
+  - name: stg_nps_responses
+    columns:
+      - name: score
+        tests: [not_null]

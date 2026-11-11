@@ -1,0 +1,34 @@
+version: 2
+
+models:
+  - name: dim_accounts
+    description: "Account dimension with lifecycle and current state as of var('as_of_month')."
+    columns:
+      - name: account_id
+        tests: [unique, not_null]
+      - name: status
+        tests:
+          - accepted_values: { values: ["Active", "Churned", "Never paid"] }
+  - name: fct_saas_metrics_monthly
+    description: "One row per month: MRR/ARR, MRR bridge, logo churn, NRR/GRR (TTM), ARPA, quick ratio, CAC, LTV."
+    columns:
+      - name: month
+        tests: [unique, not_null]
+      - name: mrr
+        tests: [not_null]
+  - name: fct_mrr_movements
+    description: "MRR movements by month, movement type and account segment."
+    columns:
+      - name: movement
+        tests:
+          - accepted_values: { values: ["new", "expansion", "contraction", "churn", "reactivation"] }
+  - name: fct_cohort_retention
+    description: "Logo and revenue retention by first-payment cohort and months since start."
+    columns:
+      - name: months_since_start
+        tests: [not_null]
+  - name: fct_churn_features
+    description: "Model-ready paying account-month snapshot with the churned_next_3m label (null when the window is incomplete)."
+    tests:
+      - dbt_utils_unique_combination:
+          columns: ["account_id", "month"]

@@ -1,0 +1,17 @@
+version: 2
+
+sources:
+  - name: landing
+    description: "Raw exports from billing, product analytics and support (CSV landing zone)."
+    # dbt does not render Jinja inside `meta`, so the path is literal (relative to the dbt/ folder,
+    # where `dbt build` runs). dbt-duckdb fills {name} with the table name.
+    meta:
+      external_location: "read_csv_auto('../data/landing/{name}.csv', header = true)"
+    tables:
+      - name: accounts
+      - name: plans
+      - name: subscription_events
+      - name: invoices
+      - name: usage_monthly
+      - name: support_tickets
+      - name: nps_responses

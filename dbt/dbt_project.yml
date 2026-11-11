@@ -1,0 +1,28 @@
+name: saas_analytics
+version: "1.0.0"
+config-version: 2
+profile: saas_analytics
+
+model-paths: ["models"]
+test-paths: ["tests"]
+macro-paths: ["macros"]
+target-path: "target"
+clean-targets: ["target", "dbt_packages"]
+
+vars:
+  landing_path: "../data/landing"   # informational: sources use a literal path, see _sources.yml
+  as_of_month: "2024-06-01"
+  churn_horizon_months: 3
+  gross_margin: 0.80
+
+models:
+  saas_analytics:
+    staging:
+      +materialized: view
+      +schema: staging
+    intermediate:
+      +materialized: table
+      +schema: intermediate
+    marts:
+      +materialized: table
+      +schema: marts
