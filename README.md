@@ -89,7 +89,7 @@ annual plans early.
 
 ## Project structure
 ```
-saas-churn_analytics_tableau/
+saas-churn-analytics-tableau/
 ├── run_pipeline.py          # runs all stages in order
 ├── src/
 │   ├── config.py            # paths, seed, logging
